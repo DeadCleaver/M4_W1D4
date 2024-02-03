@@ -1,9 +1,9 @@
 /* prova per capire il fetch e come sono strutturati i dati che ricevo */
-/* fetch("https://striveschool-api.herokuapp.com/api/deezer/search?q=metallica")
+fetch("https://striveschool-api.herokuapp.com/api/deezer/search?q=eminem")
     .then((response) => response.json())
     .then((json) => console.log(json))
     .catch((err) => console.log("Error detected: ", err));
- */
+
 
 //funzione per creare la card 
 function createCard(track) {
@@ -24,15 +24,22 @@ function createCard(track) {
     let cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
 
-    // testo della card 
-    let cardText = document.createElement('p');
-    cardText.classList.add('card-text');
-    cardText.classList.add('fs-6');
-    cardText.innerText = `${track.title} - ${track.artist.name}`;
+    // titolo dell'album
+    let albumTitle = document.createElement(`h5`);
+    albumTitle.classList.add(`card-title`);
+    albumTitle.classList.add(`album-title`);
+    albumTitle.innerText = `${track.album.title}`
+
+    // titolo della canzone 
+    let songTitle = document.createElement('p');
+    songTitle.classList.add('card-text');
+    songTitle.classList.add('song-title');
+    songTitle.innerText = `${track.title}`;
 
     // Append elements to the card
     card.appendChild(cardImg);
-    cardBody.appendChild(cardText);
+    cardBody.appendChild(albumTitle);
+    cardBody.appendChild(songTitle);
     card.appendChild(cardBody);
 
     return card;
@@ -61,4 +68,54 @@ window.onload = () => {
 
     });
 };
+
+function clearSearch() {
+    let artists = ["eminem", "metallica", "queen"];
+    artists.forEach(artist => {
+        let sectionTitle = document.getElementById(artist);
+        console.log(sectionTitle);
+        sectionTitle.classList.add("d-none");
+        let cardsWrapper = document.getElementById(`${artist}Section`);
+        console.log(cardsWrapper);
+        cardsWrapper.innerHTML = "";
+    });
+
+}
+
+function search() {
+    let searchInput = document.getElementById(`searchField`);
+    let searchQuery = searchInput.value.toLowerCase().trim();
+
+    /* prima di procedere con la ricerca ripulisce la pagina e la input box */
+    clearSearch();
+    searchInput.value = "";
+
+    fetch(`https://striveschool-api.herokuapp.com/api/deezer/search?q=${searchQuery}`)
+        .then(response => response.json())
+        .then(json => {
+
+            let sectionTitle = document.getElementById(searchQuery);
+            sectionTitle.classList.toggle("d-none");
+
+            let cardsWrapper = document.getElementById(`${searchQuery}Section`);
+
+            json.data.forEach(track => {
+                let card = createCard(track);
+                cardsWrapper.appendChild(card);
+
+            })
+                .catch((err) => console.log("Error detected: ", err));
+
+        });
+};
+
+// aggiungo gli addeventlistener una volta caricato gli elementi del dom
+document.addEventListener("DOMContentLoaded", () => {
+    let clearButton = document.getElementById(`clear-button`);
+    clearButton.addEventListener("click", clearSearch);
+
+    let searchButton = document.getElementById(`button-search`);
+    searchButton.addEventListener("click", search);
+
+});
 

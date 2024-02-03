@@ -216,10 +216,10 @@ ul {
 }
 
 .album-title {
-  color: white;
-  font-weight: bold;
-  font-size: x-large;
-  margin-bottom: 0;
+  color: darkgray;
+  font-weight:400;
+  font-size: small;
+  margin-bottom: 0.2rem;
 }
 
 .artist-name {
@@ -230,7 +230,7 @@ ul {
   width: 200px;
 }
 
-/* overrides */
+/* overrides and personalizations */
 .card {
   background-color: transparent !important;
   border: none;
@@ -238,4 +238,11 @@ ul {
 
 .card-body {
   padding: 0.5rem !important;
+}
+
+.song-title {
+  color: white;
+  font-weight: 400;
+  font-size: medium;
+  margin-bottom: 0.5rem;
 }
