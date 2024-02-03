@@ -1,8 +1,8 @@
 /* prova per capire il fetch e come sono strutturati i dati che ricevo */
-fetch("https://striveschool-api.herokuapp.com/api/deezer/search?q=eminem")
+/* fetch("https://striveschool-api.herokuapp.com/api/deezer/search?q=eminem")
     .then((response) => response.json())
     .then((json) => console.log(json))
-    .catch((err) => console.log("Error detected: ", err));
+    .catch((err) => console.log("Error detected: ", err)); */
 
 
 //funzione per creare la card 
@@ -73,10 +73,8 @@ function clearSearch() {
     let artists = ["eminem", "metallica", "queen"];
     artists.forEach(artist => {
         let sectionTitle = document.getElementById(artist);
-        console.log(sectionTitle);
         sectionTitle.classList.add("d-none");
         let cardsWrapper = document.getElementById(`${artist}Section`);
-        console.log(cardsWrapper);
         cardsWrapper.innerHTML = "";
     });
 
@@ -109,6 +107,41 @@ function search() {
         });
 };
 
+
+function showListModal() {
+    let albumListModal = document.getElementById(`album-list-modal`);
+
+    let listModalBody = document.getElementById(`list-modal-body`);
+    listModalBody.innerHTML = "";
+
+    let albumTitles = document.getElementsByClassName(`album-title`);
+    console.log(albumTitles);
+
+    Array.from(albumTitles).forEach(album => {
+        let albumTitleText = document.createElement(`p`);
+        albumTitleText.innerText = album.innerText;
+        listModalBody.appendChild(albumTitleText);
+    });
+
+
+    albumListModal.classList.add(`fade`);
+    albumListModal.classList.add(`show`);
+    albumListModal.style.display = "block";
+
+    let closeModalButton = document.getElementById(`close-modal-button`);
+    closeModalButton.addEventListener("click", closeListModal);
+
+}
+
+function closeListModal() {
+    let albumListModal = document.getElementById(`album-list-modal`);
+    
+    albumListModal.classList.remove(`fade`);
+    albumListModal.classList.remove(`show`);
+    albumListModal.style.display = "none";
+
+}
+
 // aggiungo gli addeventlistener una volta caricato gli elementi del dom
 document.addEventListener("DOMContentLoaded", () => {
     let clearButton = document.getElementById(`clear-button`);
@@ -116,6 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let searchButton = document.getElementById(`button-search`);
     searchButton.addEventListener("click", search);
+
+    let listButton = document.getElementById(`list-button`);
+    listButton.addEventListener("click", showListModal);
 
 });
 
